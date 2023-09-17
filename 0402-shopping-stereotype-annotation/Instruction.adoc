@@ -63,3 +63,19 @@ Exception in thread "main" org.springframework.beans.factory.NoSuchBeanDefinitio
 
 
 . 記載したアノテーションを部分的にわざと削除して、実行時にどのようなエラーがでるか試してみましょう。
+【JdbcOrderItemRepositoryの@Repositoryを削除した場合】
+コンテキストの初期化中に例外が発生。ファイルに定義された 'orderServiceImpl' という名前の Bean を作成する際にエラーが発生しました。
+コンストラクタのパラメータ 1 で表される依存関係が満たされていません。
+オートワイヤ候補として適格なビーンが少なくとも 1 つ必要です。
+↓
+Bean探したけど、定義されていないので見つからず。
+コンストラクタにはパラメータが不可欠なのでエラー発生。
+ちゃんとBean定義してよって感じかな。
+
+```
+WARN org.springframework.context.annotation.AnnotationConfigApplicationContext - Exception encountered during context initialization -
+cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderServiceImpl' defined in file
+Unsatisfied dependency expressed through constructor parameter 1:
+No qualifying bean of type 'com.example.shopping.repository.OrderItemRepository' available:
+expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+```
