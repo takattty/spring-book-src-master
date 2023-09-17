@@ -51,5 +51,15 @@ Exception in thread "main" org.springframework.beans.factory.NoSuchBeanDefinitio
 === オプション
 
 . Repository型のオブジェクトのインジェクションの方法を、Setterジェクションやフィールドインジェクションに変えてみましょう。
+【Setterインジェクション】
+プロパティからfinalを外す
+返り値型がvoidのSetterメソッドを作成（@Autowired付与）
+これは後からでもsetterでプロパティ変えれるから怖いですね
+【フィールドインジェクション】
+一番馴染みがあるプロパティに@Autowired付ける
+一つ一つアノテーション付けるのめんどくさいな
+
+ここまで試すと、コンストラクタインジェクションはlombokと合わせると最高に楽できる事がわかるな。
+
 
 . 記載したアノテーションを部分的にわざと削除して、実行時にどのようなエラーがでるか試してみましょう。

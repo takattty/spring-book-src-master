@@ -21,27 +21,38 @@ import org.springframework.stereotype.Service;
 // DIコンテナ起動時に下記のステレオタイプアノテーションを検知し、コンストラクタを実行してオブジェクトを生成し、Beanとして管理される。
 @Service
 public class OrderServiceImpl implements OrderService {
-//    private final OrderRepository orderRepository;
-//    private final OrderItemRepository orderItemRepository;
-//    private final ProductRepository productRepository;
-//
-    private OrderRepository orderRepository;
-    private OrderItemRepository orderItemRepository;
-    private ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
+    private final ProductRepository productRepository;
 
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
+        this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
+        this.productRepository = productRepository;
+    }
+
+    // setterインジェクション用
+//    private OrderRepository orderRepository;
+//    private OrderItemRepository orderItemRepository;
+//    private ProductRepository productRepository;
+
+    // setterインジェクション用
 //    @Autowired
-//    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
+//    public void setProperties(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
 //        this.orderRepository = orderRepository;
 //        this.orderItemRepository = orderItemRepository;
 //        this.productRepository = productRepository;
 //    }
 
-    @Autowired
-    public void setProperties(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
-        this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
-        this.productRepository = productRepository;
-    }
+    // フィールドインジェクション用
+//    @Autowired
+//    private OrderRepository orderRepository;
+//    @Autowired
+//    private OrderItemRepository orderItemRepository;
+//    @Autowired
+//    private ProductRepository productRepository;
+
 
     @Override
     public Order placeOrder(OrderInput orderInput, CartInput cartInput) {
