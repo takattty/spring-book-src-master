@@ -15,13 +15,29 @@ import com.example.shopping.input.OrderInput;
 import com.example.shopping.repository.OrderItemRepository;
 import com.example.shopping.repository.OrderRepository;
 import com.example.shopping.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+// DIコンテナ起動時に下記のステレオタイプアノテーションを検知し、コンストラクタを実行してオブジェクトを生成し、Beanとして管理される。
+@Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
-    private final ProductRepository productRepository;
+//    private final OrderRepository orderRepository;
+//    private final OrderItemRepository orderItemRepository;
+//    private final ProductRepository productRepository;
+//
+    private OrderRepository orderRepository;
+    private OrderItemRepository orderItemRepository;
+    private ProductRepository productRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
+//    @Autowired
+//    public OrderServiceImpl(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
+//        this.orderRepository = orderRepository;
+//        this.orderItemRepository = orderItemRepository;
+//        this.productRepository = productRepository;
+//    }
+
+    @Autowired
+    public void setProperties(OrderRepository orderRepository, OrderItemRepository orderItemRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.orderItemRepository = orderItemRepository;
         this.productRepository = productRepository;

@@ -4,12 +4,49 @@
 既存のプログラムにステレオタイプアノテーションを記述して、Bean定義を行います。合わせて、インジェクションするためのアノテーションも確認します。
 
 === 手順
-. ShoppingApplicationクラスのmainメソッドを実行してみましょう。「No qualifying bean of type 'com.example.shopping.service.OrderService' available」というエラーが出力されるはずです。これは、mainメソッドの中でgetBeanメソッドを呼び出した際に、指定したOrderService型に該当するBeanが存在しないためDIコンテナが例外をスローしたためです。また、現在はOrderService型のBean以外にも、OrderRepository型のBean、OrderItemRepository型のBean、ProductRepository型のBeanも存在していない状態です。
+. ShoppingApplicationクラスのmainメソッドを実行してみましょう。「No qualifying bean of type 'com.example.shopping.service.OrderService' available」というエラーが出力されるはずです。
+・これは、mainメソッドの中でgetBeanメソッドを呼び出した際に、指定したOrderService型に該当するBeanが存在しないためDIコンテナが例外をスローしたためです。
+・また、現在はOrderService型のBean以外にも、OrderRepository型のBean、OrderItemRepository型のBean、ProductRepository型のBeanも存在していない状態です。
+Exception in thread "main" org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.example.shopping.service.OrderService' available
 
 . OrderService型のBean、OrderRepository型のBean、OrderItemRepository型のBean、ProductRepository型のBeanをDIコンテナに登録するように修正してください。
 .. ヒントは、ステレオタイプアノテーションとコンポーネントスキャンです。
 
 . 再度ShoppingApplicationクラスのmainメソッドを実行し、「注文確定処理が完了しました。・・・」という文言がコンソール画面に出力されればOKです。
+
+ちゃんとログに出てるっぽいな。
+1. DIコンテナ作成
+2. アノテーション探したり管理するための設定インスタンス？を作成 // TODO: internalConfigurationAnnotationProcessor調べる
+3. Beanをスキャン（Beanファイルの読み込みみたいなイメージ？）
+4. AutowiredやCommon Annotation、Bean定義したファイルから、シングルトンの共用インスタンスを作成。
+5. 今回だとorderServiceImplのコンストラクタに登録した3つのBeanを使用して、処理を実行。
+
+```
+18:50:57.413 [main] DEBUG org.springframework.context.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@7bb11784
+18:50:57.419 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalConfigurationAnnotationProcessor'
+18:50:57.443 [main] DEBUG org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [/spring-book-src-master/0402-shopping-stereotype-annotation/target/classes/com/example/shopping/repository/JdbcOrderItemRepository.class]
+18:50:57.443 [main] DEBUG org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [/spring-book-src-master/0402-shopping-stereotype-annotation/target/classes/com/example/shopping/repository/JdbcOrderRepository.class]
+18:50:57.443 [main] DEBUG org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [/spring-book-src-master/0402-shopping-stereotype-annotation/target/classes/com/example/shopping/repository/JdbcProductRepository.class]
+18:50:57.445 [main] DEBUG org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [/spring-book-src-master/0402-shopping-stereotype-annotation/target/classes/com/example/shopping/service/OrderServiceImpl.class]
+18:50:57.480 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerProcessor'
+18:50:57.481 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerFactory'
+18:50:57.482 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalAutowiredAnnotationProcessor'
+18:50:57.482 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalCommonAnnotationProcessor'
+18:50:57.485 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'shoppingApplication'
+18:50:57.487 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'jdbcOrderItemRepository'
+18:50:57.487 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'jdbcOrderRepository'
+18:50:57.488 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'jdbcProductRepository'
+18:50:57.488 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'orderServiceImpl'
+18:50:57.495 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl' via constructor to bean named 'jdbcOrderRepository'
+18:50:57.495 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl' via constructor to bean named 'jdbcOrderItemRepository'
+18:50:57.495 [main] DEBUG org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'orderServiceImpl' via constructor to bean named 'jdbcProductRepository'
+注文を登録しました。id=5791f28a-08f2-4698-b6bf-e0df9cb6fff1
+商品を更新しました。id=p01
+注文明細を登録しました。id=343a4aa7-4c12-48d5-b348-f5a969f1db48
+商品を更新しました。id=p02
+注文明細を登録しました。id=8bba8f4b-187e-45cf-bc5e-1752a391b650
+注文確定処理が完了しました。注文ID=5791f28a-08f2-4698-b6bf-e0df9cb6fff1
+```
 
 === オプション
 
