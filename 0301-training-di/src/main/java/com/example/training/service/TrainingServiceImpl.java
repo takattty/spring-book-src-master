@@ -10,6 +10,7 @@ public class TrainingServiceImpl implements TrainingService {
     private final TrainingRepository trainingRepository;
 
     public TrainingServiceImpl(TrainingRepository trainingRepository) {
+        // ここで引数に渡されたTrainingRepositoryを登録
         this.trainingRepository = trainingRepository;
     }
 

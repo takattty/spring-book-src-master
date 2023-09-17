@@ -5,7 +5,13 @@ DIを適用することで、依存オブジェクトの具象クラスを効率
 
 === 手順
 . TrainingApplicationクラスのmainメソッドを実行してみましょう。Repositoryの具象クラスは、どれが使用されたでしょうか？
+`JdbcTrainingRepository`クラスが使用された。
+`TrainingServiceImpl`クラスのコンストラクタ引数に使用されている`trainingRepository`変数に、`JdbcTrainingRepository`クラスのインスタンスが代入されているため。
 
 . TrainingServiceImplTest(src/test/java配下)クラスのテストを実行してみましょう。TrainingServiceImplオブジェクトが用意できてないため、NullPointerExceptionが発生します。
+java.lang.NullPointerException: Cannot invoke "com.example.training.service.TrainingService.findAll()" because "trainingService" is null
 
-. TrainingServiceImplTestクラスのテストメソッドの中でTrainingServiceImplオブジェクトを生成しましょう。TrainingServiceImplオブジェクトにインジェクションする依存オブジェクトの具象クラスは、MockTrainingRepositoryクラスを使用してください。TrainingServiceImplオブジェクトが生成できたら、再度TrainingServiceImplTestのテストを実行します。テストがパスするはずです。
+. TrainingServiceImplTestクラスのテストメソッドの中でTrainingServiceImplオブジェクトを生成しましょう。
+・TrainingServiceImplオブジェクトにインジェクションする依存オブジェクトの具象クラスは、MockTrainingRepositoryクラスを使用してください。
+・TrainingServiceImplオブジェクトが生成できたら、再度TrainingServiceImplTestのテストを実行します。テストがパスするはずです。
+テスト用のデータをメモリ上に用意します
